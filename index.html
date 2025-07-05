@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMWebSolutions CR - Construyendo el Futuro</title>
+    <meta name="description" content="BMWebSolutions CR - Desarrollo web profesional en Costa Rica. Construyendo el futuro, una línea de código a la vez">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="code-loader">
+                <span>&lt;</span>
+                <span class="loading-text">Cargando</span>
+                <span>/&gt;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <canvas id="particles-canvas"></canvas>
+        <div class="geometric-bg">
+            <div class="grid-lines"></div>
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-code"></i>
+                <span>BMWebSolutions CR</span>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Inicio</a></li>
+                <li><a href="#technologies" class="nav-link">Tecnologías</a></li>
+                <li><a href="#portfolio" class="nav-link">Portafolio</a></li>
+                <li><a href="#community" class="nav-link">Comunidad</a></li>
+                <li><a href="#contact" class="nav-link">Contacto</a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text" data-aos="fade-up" data-aos-duration="1000">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Construyendo el futuro,</span>
+                    <span class="typewriter">una línea de código a la vez</span>
+                </h1>
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="300">
+                    Somos BMWebSolutions CR, una empresa costarricense especializada en desarrollo web y tecnologías de vanguardia. Transformamos ideas en soluciones digitales innovadoras.
+                </p>
+                <div class="hero-buttons" data-aos="fade-up" data-aos-delay="600">
+                    <a href="#portfolio" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Explorar Proyectos
+                    </a>
+                    <a href="#community" class="btn btn-secondary">
+                        <i class="fas fa-users"></i>
+                        Únete a la Comunidad
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">
+                <div class="code-preview">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="code-content">
+                        <pre><code class="language-javascript">
+const developer = {
+    name: "DevSpace",
+    mission: "Innovar",
+    stack: ["React", "Node.js", "Python"],
+    build: () => "El futuro"
+};
+
+console.log(developer.build());
+                        </code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="1000">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies" class="section technologies">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Tecnologías de Vanguardia</h2>
+                <p class="section-subtitle">Dominamos las herramientas más avanzadas del desarrollo moderno</p>
+            </div>
+            
+            <div class="tech-grid">
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="tech-icon">
+                        <i class="fab fa-react"></i>
+                    </div>
+                    <h3>React</h3>
+                    <p>Interfaces dinámicas y componentes reutilizables</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="tech-icon">
+                        <i class="fab fa-vue"></i>
+                    </div>
+                    <h3>Vue.js</h3>
+                    <p>Framework progresivo para aplicaciones web</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="tech-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python</h3>
+                    <p>Desarrollo backend y ciencia de datos</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="tech-icon">
+                        <i class="fab fa-js-square"></i>
+                    </div>
+                    <h3>TypeScript</h3>
+                    <p>JavaScript tipado para proyectos escalables</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="tech-icon">
+                        <i class="fab fa-rust"></i>
+                    </div>
+                    <h3>Rust</h3>
+                    <p>Rendimiento y seguridad de memoria</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="600">
+                    <div class="tech-icon">
+                        <i class="fab fa-node-js"></i>
+                    </div>
+                    <h3>Node.js</h3>
+                    <p>Desarrollo backend con JavaScript</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="700">
+                    <div class="tech-icon">
+                        <i class="fab fa-docker"></i>
+                    </div>
+                    <h3>Docker</h3>
+                    <p>Contenedores para despliegue eficiente</p>
+                </div>
+                
+                <div class="tech-card" data-aos="zoom-in" data-aos-delay="800">
+                    <div class="tech-icon">
+                        <i class="fab fa-aws"></i>
+                    </div>
+                    <h3>Cloud AWS</h3>
+                    <p>Infraestructura escalable en la nube</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section portfolio">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Portafolio de Proyectos</h2>
+                <p class="section-subtitle">Showcases de innovación y excelencia técnica</p>
+            </div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="100">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-mobile-alt"></i>
+                                <h4>FinTech App</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>FinTech Mobile App</h3>
+                        <p>Aplicación móvil para gestión financiera personal con React Native y blockchain</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Blockchain</span>
+                            <span class="tech-tag">Node.js</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="200">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-brain"></i>
+                                <h4>AI Platform</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>AI Analytics Platform</h3>
+                        <p>Plataforma de análisis predictivo usando machine learning y visualización de datos</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-globe"></i>
+                                <h4>Web3 DApp</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Web3 Marketplace</h3>
+                        <p>Marketplace descentralizado para NFTs con contratos inteligentes en Ethereum</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Solidity</span>
+                            <span class="tech-tag">Web3.js</span>
+                            <span class="tech-tag">IPFS</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="400">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-gamepad"></i>
+                                <h4>Game Engine</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>3D Game Engine</h3>
+                        <p>Motor de juegos 3D desarrollado en Rust con soporte para física avanzada</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Rust</span>
+                            <span class="tech-tag">WebGL</span>
+                            <span class="tech-tag">WASM</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="500">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-cloud"></i>
+                                <h4>Cloud Platform</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Microservices Platform</h3>
+                        <p>Arquitectura de microservicios escalable con Kubernetes y Docker</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Kubernetes</span>
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">GraphQL</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-aos="flip-left" data-aos-delay="600">
+                    <div class="portfolio-image">
+                        <div class="project-preview">
+                            <div class="preview-content">
+                                <i class="fas fa-robot"></i>
+                                <h4>IoT System</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>IoT Smart Home</h3>
+                        <p>Sistema domótico inteligente con sensores IoT y control por IA</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Arduino</span>
+                            <span class="tech-tag">MQTT</span>
+                            <span class="tech-tag">Node.js</span>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="#" class="btn-icon"><i class="fab fa-github"></i></a>
+                            <a href="#" class="btn-icon"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="section community">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Nuestra Comunidad</h2>
+                <p class="section-subtitle">Conoce a los desarrolladores que están construyendo el futuro</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user-astronaut"></i>
+                        </div>
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Alex Rodriguez</h3>
+                        <p class="role">Full Stack Developer</p>
+                        <p class="bio">Especialista en React y Node.js con 5 años de experiencia en startups</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user-ninja"></i>
+                        </div>
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Maria Chen</h3>
+                        <p class="role">AI/ML Engineer</p>
+                        <p class="bio">Doctora en Ciencias de la Computación, líder en proyectos de IA</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="team-avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3>David Kim</h3>
+                        <p class="role">DevOps Engineer</p>
+                        <p class="bio">Experto en infraestructura cloud y automatización de despliegues</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="team-avatar">
+                        <div class="avatar-placeholder">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Sara Johnson</h3>
+                        <p class="role">Blockchain Developer</p>
+                        <p class="bio">Pionera en desarrollo de contratos inteligentes y DeFi</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Conectemos</h2>
+                <p class="section-subtitle">¿Tienes un proyecto en mente? Hablemos sobre cómo podemos ayudarte</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Ubicación</h4>
+                            <p>San José, Costa Rica</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>hello@devspace.dev</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Teléfono</h4>
+                            <p>+506 1234-5678</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Horario</h4>
+                            <p>Lun - Vie: 9:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" data-aos="fade-left" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nombre Completo</label>
+                        <input type="text" id="name" name="name" required>
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company">Empresa (Opcional)</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Asunto</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Selecciona un tema</option>
+                            <option value="project">Nuevo Proyecto</option>
+                            <option value="collaboration">Colaboración</option>
+                            <option value="consultation">Consultoría</option>
+                            <option value="other">Otro</option>
+                        </select>
+                        <span class="error-message" id="subject-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <span class="error-message" id="message-error"></span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <i class="fas fa-code"></i>
+                        <span>DevSpace</span>
+                    </div>
+                    <p>Construyendo el futuro digital con tecnología de vanguardia y pasión por la innovación.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#technologies">Tecnologías</a></li>
+                        <li><a href="#portfolio">Portafolio</a></li>
+                        <li><a href="#community">Comunidad</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="#">Desarrollo Web</a></li>
+                        <li><a href="#">Aplicaciones Móviles</a></li>
+                        <li><a href="#">Consultoría Tech</a></li>
+                        <li><a href="#">DevOps</a></li>
+                        <li><a href="#">Blockchain</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Soporte</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DevSpace. Todos los derechos reservados.</p>
+                <div class="footer-links">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+        
+        <button class="back-to-top" id="back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="scripts/particles.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
