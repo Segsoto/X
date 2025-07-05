@@ -28,6 +28,24 @@
 - **Misión**: Transformar ideas en soluciones digitales innovadoras
 - **Visión**: Ser la empresa líder en desarrollo web en Costa Rica
 
+## 🚀 Nuestros Proyectos
+
+BMWebSolutions CR ha desarrollado sitios web para diversas empresas costarricenses:
+
+### Proyectos Activos
+- **[GranimarCR](https://www.granimarcr.com)** - Empresa de muebles de granito con +20 años de experiencia
+- **[Sergio Madriz Avendaño](https://abogado-web-lo6j.vercel.app)** - Despacho jurídico especializado en asesoría legal
+- **[Taller Avena](https://talleravena-b2nb.vercel.app)** - Especialistas en reparación de motocicletas
+- **[Stone By Ric](https://stonebyric.vercel.app)** - Expertos en piedra natural y diseño de espacios
+
+### Tecnologías Utilizadas en Proyectos
+- HTML5, CSS3, JavaScript
+- WordPress + PHP
+- React.js, Vue.js
+- Node.js
+- Responsive Design
+- SEO Optimizado
+
 ## ✨ Características Principales
 
 ### 🎨 Diseño Visual
