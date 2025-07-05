@@ -519,11 +519,6 @@
     scroll-behavior: auto !important;
   }
   
-  .typewriter {
-    border-right: none;
-    animation: none;
-  }
-  
   .scroll-indicator {
     animation: none;
   }

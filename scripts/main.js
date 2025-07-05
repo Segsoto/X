@@ -23,7 +23,6 @@ class BMWebSolutions {
     
     this.setupSmoothScroll();
     this.setupFormValidation();
-    this.setupTypewriterEffect();
     this.setupScrollAnimations();
   }
   
@@ -68,9 +67,6 @@ class BMWebSolutions {
     elements.forEach(el => {
       el.classList.add('aos-animate');
     });
-    
-    // Start typewriter effect
-    this.startTypewriter();
   }
   
   // ===============================
@@ -197,40 +193,6 @@ class BMWebSolutions {
       top: 0,
       behavior: 'smooth'
     });
-  }
-  
-  // ===============================
-  // TYPEWRITER EFFECT
-  // ===============================
-  
-  setupTypewriterEffect() {
-    this.typewriterElement = document.querySelector('.typewriter');
-    this.typewriterText = 'una línea de código a la vez';
-    this.typewriterIndex = 0;
-    this.typewriterSpeed = 100;
-    this.isTyping = false;
-  }
-  
-  startTypewriter() {
-    if (!this.typewriterElement || this.isTyping) return;
-    
-    this.isTyping = true;
-    this.typewriterElement.textContent = '';
-    this.typewriterIndex = 0;
-    
-    this.typeNextChar();
-  }
-  
-  typeNextChar() {
-    if (this.typewriterIndex < this.typewriterText.length) {
-      this.typewriterElement.textContent += this.typewriterText.charAt(this.typewriterIndex);
-      this.typewriterIndex++;
-      setTimeout(() => this.typeNextChar(), this.typewriterSpeed);
-    } else {
-      this.isTyping = false;
-      // Restart after delay
-      setTimeout(() => this.startTypewriter(), 3000);
-    }
   }
   
   // ===============================
