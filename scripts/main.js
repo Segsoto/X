@@ -1,8 +1,8 @@
 // ===============================
-// MAIN JAVASCRIPT - DEVSPACE
+// MAIN JAVASCRIPT - BMWEBSOLUTIONS CR
 // ===============================
 
-class DevSpace {
+class BMWebSolutions {
   constructor() {
     this.init();
     this.bindEvents();
@@ -621,7 +621,7 @@ function initPerformanceMonitoring() {
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize main app
-  window.devSpace = new DevSpace();
+  window.bmWebSolutions = new BMWebSolutions();
   
   // Initialize additional features
   initLazyLoading();
@@ -676,5 +676,5 @@ document.addEventListener('visibilitychange', () => {
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = DevSpace;
+  module.exports = BMWebSolutions;
 }

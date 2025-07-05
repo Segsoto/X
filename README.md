@@ -1,12 +1,32 @@
-# DevSpace - Página Web Futurista para Desarrolladores
+# BMWebSolutions CR - Página Web Corporativa
 
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Costa Rica](https://img.shields.io/badge/Costa_Rica-🇨🇷-blue?style=for-the-badge)](https://en.wikipedia.org/wiki/Costa_Rica)
 
 ## 🚀 Descripción
 
-DevSpace es una página web moderna y futurista diseñada específicamente para desarrolladores de software. Presenta un diseño oscuro con elementos neón, animaciones avanzadas y una experiencia de usuario completamente responsiva.
+**BMWebSolutions CR** es una empresa costarricense especializada en desarrollo web y soluciones digitales innovadoras. Fundada por **Brandon Soto** y **Manfred Zuñiga**, ofrecemos servicios de desarrollo web moderno con tecnologías de vanguardia.
+
+## 👥 Fundadores
+
+### Brandon Soto
+- **Co-Fundador & Full Stack Developer**
+- Especialista en desarrollo web moderno
+- Experiencia en React, Node.js y tecnologías de vanguardia
+
+### Manfred Zuñiga
+- **Co-Fundador & Tech Lead**
+- Experto en arquitectura de software
+- Desarrollo de soluciones escalables para empresas
+
+## 🇨🇷 Empresa Costarricense
+
+- **Ubicación**: San José, Costa Rica
+- **Enfoque**: Desarrollo web profesional
+- **Misión**: Transformar ideas en soluciones digitales innovadoras
+- **Visión**: Ser la empresa líder en desarrollo web en Costa Rica
 
 ## ✨ Características Principales
 
@@ -41,7 +61,7 @@ DevSpace es una página web moderna y futurista diseñada específicamente para 
 ## 🏗️ Estructura del Proyecto
 
 ```
-DevSpace/
+BMWebSolutions-CR/
 ├── index.html                 # Página principal
 ├── styles/
 │   ├── main.css              # Estilos base y variables
@@ -99,24 +119,13 @@ Las variables de color se encuentran en `styles/main.css`:
 --font-accent: 'Orbitron', monospace;    /* Títulos y elementos destacados */
 ```
 
-### Animaciones
-Puedes ajustar las animaciones en `styles/animations.css` o deshabilitar completamente con:
-```css
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
 ## 🌟 Secciones de la Página
 
 ### 1. Hero Section
 - Mensaje principal con efecto typewriter
+- Información sobre BMWebSolutions CR
 - Botones de call-to-action
-- Ventana de código simulada
-- Indicador de scroll animado
+- Ventana de código con información de la empresa
 
 ### 2. Tecnologías
 - Grid responsivo de tarjetas
@@ -124,22 +133,42 @@ Puedes ajustar las animaciones en `styles/animations.css` o deshabilitar complet
 - Efectos hover con transformaciones 3D
 
 ### 3. Portafolio
-- Proyectos ficticios con previsualizaciones
-- Overlay con información detallada
+- Proyectos desarrollados por BMWebSolutions CR
+- Previsualizaciones interactivas
 - Tags de tecnologías utilizadas
-- Enlaces a GitHub y demos
+- Enlaces a demos y repositorios
 
-### 4. Comunidad
-- Perfiles de desarrolladores
-- Avatares animados con efectos de ring
+### 4. Nuestro Equipo
+- Perfiles de Brandon Soto y Manfred Zuñiga
+- Información sobre la empresa
+- Identidad costarricense
 - Enlaces a redes sociales
-- Biografías profesionales
 
 ### 5. Contacto
-- Formulario con validación en tiempo real
-- Información de contacto
-- Efectos de focus y estados de error
-- Notificaciones de éxito/error
+- Formulario de contacto empresarial
+- Información de BMWebSolutions CR
+- Datos de contacto en Costa Rica
+- Validación en tiempo real
+
+## 📞 Información de Contacto
+
+**BMWebSolutions CR**
+- **Email**: info@bmwebsolutions.cr
+- **Ubicación**: San José, Costa Rica
+- **Teléfono**: +506 1234-5678
+- **Horario**: Lun - Vie: 9:00 AM - 6:00 PM
+
+## 🎯 Servicios Ofrecidos
+
+- **Desarrollo Web**: Sitios web modernos y responsivos
+- **Aplicaciones Web**: Aplicaciones escalables y robustas
+- **Consultoría Tech**: Asesoramiento en tecnologías web
+- **Mantenimiento**: Soporte continuo y actualizaciones
+- **Optimización**: SEO y performance optimization
+
+## 🇨🇷 Orgullosamente Costarricense
+
+BMWebSolutions CR es una empresa 100% costarricense que busca posicionar a Costa Rica como un referente en desarrollo web en Centroamérica. Trabajamos con estándares internacionales manteniendo nuestras raíces ticas.
 
 ## 🎯 Características Técnicas
 
@@ -330,7 +359,9 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más 
 - **Inspiración** - Diseño futurista y comunidad de desarrolladores
 
 ### Desarrollado por
-DevSpace Team - Construyendo el futuro, una línea de código a la vez.
+**BMWebSolutions CR**
+- Brandon Soto - Co-Fundador & Full Stack Developer
+- Manfred Zuñiga - Co-Fundador & Tech Lead
 
 ---
 
@@ -343,8 +374,8 @@ DevSpace Team - Construyendo el futuro, una línea de código a la vez.
 
 ---
 
-**¡Gracias por usar DevSpace!** 🚀
+**¡Gracias por visitar BMWebSolutions CR!** 🚀🇨🇷
 
-Si tienes preguntas, sugerencias o encuentras algún bug, no dudes en abrir un issue o contactarnos.
+Si tienes preguntas, sugerencias o necesitas una cotización, no dudes en contactarnos.
 
-*Construyendo el futuro, una línea de código a la vez.* 💻✨
+*Construyendo el futuro digital de Costa Rica, una línea de código a la vez.* 💻✨
