@@ -7,7 +7,7 @@ class BMWebSolutions {
     this.init();
     this.bindEvents();
     this.initAOS();
-    this.startLoading();
+    this.initAnimations();
   }
   
   init() {
@@ -16,7 +16,6 @@ class BMWebSolutions {
     this.navMenu = document.getElementById('nav-menu');
     this.backToTop = document.getElementById('back-to-top');
     this.contactForm = document.getElementById('contact-form');
-    this.loadingScreen = document.getElementById('loading-screen');
     
     this.isMenuOpen = false;
     this.scrollPosition = 0;
@@ -60,19 +59,8 @@ class BMWebSolutions {
   }
   
   // ===============================
-  // LOADING SCREEN
+  // ANIMATIONS INITIALIZATION
   // ===============================
-  
-  startLoading() {
-    setTimeout(() => {
-      this.loadingScreen?.classList.add('hidden');
-      
-      // Initialize animations after loading
-      setTimeout(() => {
-        this.initAnimations();
-      }, 500);
-    }, 2000);
-  }
   
   initAnimations() {
     // Add entrance animations to elements
