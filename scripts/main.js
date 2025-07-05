@@ -191,19 +191,19 @@ class BMWebSolutions {
   }
   
   handleParallax(scrollTop) {
-    // Parallax effect for hero section
+    // Solo efectos muy sutiles en el hero cuando está visible
     const heroSection = document.querySelector('.hero');
-    if (heroSection) {
-      const parallaxSpeed = 0.5;
-      heroSection.style.transform = `translateY(${scrollTop * parallaxSpeed}px)`;
-    }
+    const heroRect = heroSection.getBoundingClientRect();
     
-    // Parallax for floating shapes
-    const shapes = document.querySelectorAll('.floating-shapes .shape');
-    shapes.forEach((shape, index) => {
-      const speed = 0.2 + (index * 0.1);
-      shape.style.transform = `translateY(${scrollTop * speed}px)`;
-    });
+    // Solo aplicar efectos si el hero está visible
+    if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
+      const heroShapes = document.querySelectorAll('.hero .floating-shapes .shape');
+      heroShapes.forEach((shape, index) => {
+        const speed = 0.05 + (index * 0.02);
+        const movement = Math.min(scrollTop * speed, 30);
+        shape.style.transform = `translateY(${movement}px) rotate(${movement * 0.5}deg)`;
+      });
+    }
   }
   
   // ===============================

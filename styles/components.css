@@ -123,6 +123,7 @@
   padding: var(--spacing-4xl) 0;
   position: relative;
   overflow: hidden;
+  background: var(--bg-primary);
 }
 
 .hero-content {

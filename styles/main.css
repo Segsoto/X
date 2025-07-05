@@ -271,17 +271,18 @@ a:hover {
 }
 
 /* ===============================
-   FONDO ANIMADO
+   FONDO ANIMADO - SOLO HERO
    =============================== */
 
 .animated-bg {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: -1;
   pointer-events: none;
+  overflow: hidden;
 }
 
 #particles-canvas {
@@ -308,15 +309,15 @@ a:hover {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: gridMove 20s linear infinite;
+    linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 30s linear infinite;
 }
 
 @keyframes gridMove {
   0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, 50px); }
+  100% { transform: translate(60px, 60px); }
 }
 
 .floating-shapes {
@@ -325,14 +326,15 @@ a:hover {
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .shape {
   position: absolute;
   background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
   border-radius: var(--border-radius-lg);
-  opacity: 0.1;
-  animation: float 20s ease-in-out infinite;
+  opacity: 0.05;
+  animation: float 25s ease-in-out infinite;
 }
 
 .shape-1 {
@@ -360,10 +362,18 @@ a:hover {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-20px) rotate(90deg); }
-  50% { transform: translateY(-40px) rotate(180deg); }
-  75% { transform: translateY(-20px) rotate(270deg); }
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% { 
+    transform: translateY(-15px) rotate(45deg);
+  }
+  50% { 
+    transform: translateY(-25px) rotate(90deg);
+  }
+  75% { 
+    transform: translateY(-15px) rotate(135deg);
+  }
 }
 
 /* ===============================
@@ -474,4 +484,37 @@ a:hover {
   .section-header {
     margin-bottom: var(--spacing-3xl);
   }
+}
+
+/* ===============================
+   SECCIONES SIN ANIMACIONES DE FONDO
+   =============================== */
+
+.section:not(.hero) {
+  background: var(--bg-primary);
+  position: relative;
+  z-index: 1;
+}
+
+/* Asegurar que las secciones tengan fondo sólido */
+.technologies,
+.portfolio,
+.community,
+.contact {
+  background: var(--bg-primary);
+  position: relative;
+}
+
+/* ===============================
+   ANIMACIONES CONTENIDAS AL HERO
+   =============================== */
+
+/* Solo el hero debe tener efectos de paralaje */
+.hero .floating-shapes .shape {
+  will-change: transform;
+}
+
+/* Desactivar cualquier efecto de paralaje fuera del hero */
+.section:not(.hero) * {
+  transform: none !important;
 }

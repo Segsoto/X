@@ -12,10 +12,10 @@ class ParticleSystem {
     this.isMouseMoving = false;
     
     this.settings = {
-      particleCount: 100,
-      particleSize: 2,
-      connectionDistance: 100,
-      speed: 0.5,
+      particleCount: 50,
+      particleSize: 1.5,
+      connectionDistance: 80,
+      speed: 0.3,
       colors: ['#00d4ff', '#ff2f87', '#39ff14', '#bc13fe']
     };
     
@@ -30,8 +30,14 @@ class ParticleSystem {
   }
   
   resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    const heroSection = document.querySelector('.hero');
+    if (heroSection) {
+      this.canvas.width = heroSection.offsetWidth;
+      this.canvas.height = heroSection.offsetHeight;
+    } else {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    }
   }
   
   createParticles() {
