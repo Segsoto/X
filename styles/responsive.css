@@ -519,18 +519,6 @@
     scroll-behavior: auto !important;
   }
   
-  .animated-bg {
-    display: none;
-  }
-  
-  .particles-canvas {
-    display: none;
-  }
-  
-  .floating-shapes {
-    display: none;
-  }
-  
   .typewriter {
     border-right: none;
     animation: none;
@@ -562,7 +550,6 @@
   .hamburger,
   .back-to-top,
   .scroll-indicator,
-  .animated-bg,
   .contact-form {
     display: none !important;
   }

@@ -142,9 +142,6 @@ class BMWebSolutions {
     
     // Update active navigation
     this.updateActiveNavOnScroll();
-    
-    // Parallax effects
-    this.handleParallax(scrollTop);
   }
   
   updateNavbar(scrollTop) {
@@ -176,22 +173,6 @@ class BMWebSolutions {
         this.updateActiveNav(`#${sectionId}`);
       }
     });
-  }
-  
-  handleParallax(scrollTop) {
-    // Solo efectos muy sutiles en el hero cuando está visible
-    const heroSection = document.querySelector('.hero');
-    const heroRect = heroSection.getBoundingClientRect();
-    
-    // Solo aplicar efectos si el hero está visible
-    if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
-      const heroShapes = document.querySelectorAll('.hero .floating-shapes .shape');
-      heroShapes.forEach((shape, index) => {
-        const speed = 0.05 + (index * 0.02);
-        const movement = Math.min(scrollTop * speed, 30);
-        shape.style.transform = `translateY(${movement}px) rotate(${movement * 0.5}deg)`;
-      });
-    }
   }
   
   // ===============================
