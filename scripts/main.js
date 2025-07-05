@@ -12,7 +12,7 @@ class BMWebSolutions {
   
   init() {
     this.navbar = document.getElementById('navbar');
-    this.hamburger = document.getElementById('hamburger');
+    this.navToggle = document.getElementById('nav-toggle');
     this.navMenu = document.getElementById('nav-menu');
     this.backToTop = document.getElementById('back-to-top');
     this.contactForm = document.getElementById('contact-form');
@@ -30,7 +30,7 @@ class BMWebSolutions {
   
   bindEvents() {
     // Navigation events
-    this.hamburger?.addEventListener('click', () => this.toggleMenu());
+    this.navToggle?.addEventListener('click', () => this.toggleMenu());
     
     // Scroll events
     window.addEventListener('scroll', this.throttle(() => this.handleScroll(), 16));
@@ -91,7 +91,7 @@ class BMWebSolutions {
   
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    this.hamburger?.classList.toggle('active');
+    this.navToggle?.classList.toggle('active');
     this.navMenu?.classList.toggle('active');
     
     // Prevent body scroll when menu is open
