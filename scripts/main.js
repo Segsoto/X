@@ -1,611 +1,970 @@
-// ===============================
-// MAIN JAVASCRIPT - BMWEBSOLUTIONS CR
-// ===============================
+/**
+ * BMWebSolutions CR - Main JavaScript File
+ * Desarrollado por Brandon Soto y Manfred Zuñiga
+ * Funcionalidades principales del sitio web
+ */
 
-class BMWebSolutions {
-  constructor() {
-    this.init();
-    this.bindEvents();
-    this.initAOS();
-    this.initAnimations();
-  }
-  
-  init() {
-    this.navbar = document.getElementById('navbar');
-    this.navToggle = document.getElementById('nav-toggle');
-    this.navMenu = document.getElementById('nav-menu');
-    this.backToTop = document.getElementById('back-to-top');
-    this.contactForm = document.getElementById('contact-form');
+// ============================
+// 1. INICIALIZACIÓN Y CONFIGURACIÓN
+// ============================
+
+// Configuración global
+const CONFIG = {
+    particlesCount: 100,
+    animationSpeed: 0.02,
+    scrollOffset: 100,
+    typewriterSpeed: 80,
+    counterSpeed: 50,
+    formDelay: 300
+};
+
+// Estado global de la aplicación
+const APP_STATE = {
+    isMenuOpen: false,
+    isScrolled: false,
+    currentTheme: 'dark',
+    isFormSubmitting: false,
+    particles: [],
+    animationId: null
+};
+
+// ============================
+// 2. DOM READY Y INICIALIZACIÓN
+// ============================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 BMWebSolutions CR - Inicializando...');
     
-    this.isMenuOpen = false;
-    this.scrollPosition = 0;
-    this.isScrolling = false;
+    // Inicializar todos los módulos
+    initializeTheme();
+    initializeNavigation();
+    initializeScrollEffects();
+    initializeParticles();
+    initializeHeroAnimations();
+    initializeCounters();
+    initializeTypewriter();
+    initializeFormValidation();
+    initializeAOS();
+    initializeGSAP();
+    initializeFloatingCV();
+    initializeScrollToTop();
     
-    this.setupSmoothScroll();
-    this.setupFormValidation();
-    this.setupScrollAnimations();
-  }
-  
-  bindEvents() {
-    // Navigation events
-    this.navToggle?.addEventListener('click', () => this.toggleMenu());
+    console.log('✅ BMWebSolutions CR - Inicialización completa');
+});
+
+// ============================
+// 3. SISTEMA DE TEMAS (DARK/LIGHT)
+// ============================
+
+function initializeTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     
-    // Scroll events
-    window.addEventListener('scroll', this.throttle(() => this.handleScroll(), 16));
+    // Aplicar tema guardado
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    APP_STATE.currentTheme = savedTheme;
+    updateThemeIcon();
     
-    // Back to top button
-    this.backToTop?.addEventListener('click', () => this.scrollToTop());
+    // Event listener para cambio de tema
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+}
+
+function toggleTheme() {
+    const newTheme = APP_STATE.currentTheme === 'dark' ? 'light' : 'dark';
     
-    // Navigation links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', (e) => this.handleNavClick(e));
+    // Transición suave
+    document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    
+    APP_STATE.currentTheme = newTheme;
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon();
+    
+    // Remover transición después de un tiempo
+    setTimeout(() => {
+        document.documentElement.style.transition = '';
+    }, 300);
+    
+    // Mostrar notificación
+    showNotification(`Tema ${newTheme === 'dark' ? 'oscuro' : 'claro'} activado`);
+}
+
+function updateThemeIcon() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+    
+    const sunIcon = themeToggle.querySelector('.fa-sun');
+    const moonIcon = themeToggle.querySelector('.fa-moon');
+    
+    if (APP_STATE.currentTheme === 'dark') {
+        sunIcon.style.opacity = '0';
+        moonIcon.style.opacity = '1';
+    } else {
+        sunIcon.style.opacity = '1';
+        moonIcon.style.opacity = '0';
+    }
+}
+
+// ============================
+// 4. NAVEGACIÓN Y MENÚ
+// ============================
+
+function initializeNavigation() {
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navbar = document.getElementById('navbar');
+    
+    // Toggle menú móvil
+    if (navToggle) {
+        navToggle.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // Cerrar menú al hacer click en un enlace
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                smoothScrollTo(targetElement);
+                closeMobileMenu();
+            }
+        });
     });
     
-    // Form submission
-    this.contactForm?.addEventListener('submit', (e) => this.handleFormSubmit(e));
+    // Navbar scroll effect
+    window.addEventListener('scroll', handleNavbarScroll);
     
-    // Real-time form validation
-    this.contactForm?.addEventListener('input', (e) => this.validateField(e.target));
+    // Resaltar enlace activo
+    window.addEventListener('scroll', highlightActiveNavLink);
+}
+
+function toggleMobileMenu() {
+    const navMenu = document.getElementById('nav-menu');
+    const navToggle = document.getElementById('nav-toggle');
     
-    // Resize events
-    window.addEventListener('resize', this.debounce(() => this.handleResize(), 250));
+    APP_STATE.isMenuOpen = !APP_STATE.isMenuOpen;
     
-    // Click outside menu
-    document.addEventListener('click', (e) => this.handleOutsideClick(e));
+    if (navMenu) {
+        navMenu.classList.toggle('active');
+    }
     
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => this.handleKeydown(e));
-  }
-  
-  // ===============================
-  // ANIMATIONS INITIALIZATION
-  // ===============================
-  
-  initAnimations() {
-    // Add entrance animations to elements
-    const elements = document.querySelectorAll('[data-aos]');
-    elements.forEach(el => {
-      el.classList.add('aos-animate');
-    });
-  }
-  
-  // ===============================
-  // NAVIGATION
-  // ===============================
-  
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-    this.navToggle?.classList.toggle('active');
-    this.navMenu?.classList.toggle('active');
+    if (navToggle) {
+        navToggle.classList.toggle('active');
+    }
     
     // Prevent body scroll when menu is open
-    document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
-  }
-  
-  closeMenu() {
-    this.isMenuOpen = false;
-    this.hamburger?.classList.remove('active');
-    this.navMenu?.classList.remove('active');
+    document.body.style.overflow = APP_STATE.isMenuOpen ? 'hidden' : '';
+}
+
+function closeMobileMenu() {
+    const navMenu = document.getElementById('nav-menu');
+    const navToggle = document.getElementById('nav-toggle');
+    
+    APP_STATE.isMenuOpen = false;
+    
+    if (navMenu) {
+        navMenu.classList.remove('active');
+    }
+    
+    if (navToggle) {
+        navToggle.classList.remove('active');
+    }
+    
     document.body.style.overflow = '';
-  }
-  
-  handleNavClick(e) {
-    e.preventDefault();
-    const href = e.target.getAttribute('href');
+}
+
+function handleNavbarScroll() {
+    const navbar = document.getElementById('navbar');
+    const scrolled = window.scrollY > 50;
     
-    if (href && href.startsWith('#')) {
-      const target = document.querySelector(href);
-      if (target) {
-        this.scrollToElement(target);
-        this.closeMenu();
-        this.updateActiveNav(href);
-      }
+    if (scrolled !== APP_STATE.isScrolled) {
+        APP_STATE.isScrolled = scrolled;
+        
+        if (navbar) {
+            navbar.classList.toggle('scrolled', scrolled);
+        }
     }
-  }
-  
-  updateActiveNav(activeHref) {
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === activeHref) {
-        link.classList.add('active');
-      }
-    });
-  }
-  
-  handleOutsideClick(e) {
-    if (this.isMenuOpen && 
-        !this.navMenu?.contains(e.target) && 
-        !this.hamburger?.contains(e.target)) {
-      this.closeMenu();
-    }
-  }
-  
-  // ===============================
-  // SCROLL HANDLING
-  // ===============================
-  
-  handleScroll() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Update scroll position
-    this.scrollPosition = scrollTop;
-    
-    // Update navbar appearance
-    this.updateNavbar(scrollTop);
-    
-    // Update back to top button
-    this.updateBackToTop(scrollTop);
-    
-    // Update active navigation
-    this.updateActiveNavOnScroll();
-  }
-  
-  updateNavbar(scrollTop) {
-    if (scrollTop > 50) {
-      this.navbar?.classList.add('scrolled');
-    } else {
-      this.navbar?.classList.remove('scrolled');
-    }
-  }
-  
-  updateBackToTop(scrollTop) {
-    if (scrollTop > 300) {
-      this.backToTop?.classList.add('visible');
-    } else {
-      this.backToTop?.classList.remove('visible');
-    }
-  }
-  
-  updateActiveNavOnScroll() {
+}
+
+function highlightActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
-    const scrollPos = window.pageYOffset + 100;
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let currentSection = '';
     
     sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      const sectionId = section.getAttribute('id');
-      
-      if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-        this.updateActiveNav(`#${sectionId}`);
-      }
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        const scrollPos = window.scrollY + 200;
+        
+        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+            currentSection = section.getAttribute('id');
+        }
     });
-  }
-  
-  // ===============================
-  // SMOOTH SCROLLING
-  // ===============================
-  
-  setupSmoothScroll() {
-    // Enable smooth scrolling for the document
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }
-  
-  scrollToElement(element) {
-    const offsetTop = element.offsetTop - 70; // Account for fixed navbar
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth'
-    });
-  }
-  
-  scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }
-  
-  // ===============================
-  // FORM VALIDATION
-  // ===============================
-  
-  setupFormValidation() {
-    this.validators = {
-      name: (value) => {
-        if (!value.trim()) return 'El nombre es requerido';
-        if (value.trim().length < 2) return 'El nombre debe tener al menos 2 caracteres';
-        return null;
-      },
-      email: (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value.trim()) return 'El email es requerido';
-        if (!emailRegex.test(value)) return 'Por favor ingresa un email válido';
-        return null;
-      },
-      subject: (value) => {
-        if (!value) return 'Por favor selecciona un asunto';
-        return null;
-      },
-      message: (value) => {
-        if (!value.trim()) return 'El mensaje es requerido';
-        if (value.trim().length < 10) return 'El mensaje debe tener al menos 10 caracteres';
-        return null;
-      }
-    };
-  }
-  
-  validateField(field) {
-    const fieldName = field.name;
-    const fieldValue = field.value;
-    const errorElement = document.getElementById(`${fieldName}-error`);
     
-    if (this.validators[fieldName]) {
-      const error = this.validators[fieldName](fieldValue);
-      
-      if (error) {
-        field.classList.add('error');
-        if (errorElement) {
-          errorElement.textContent = error;
-          errorElement.style.display = 'block';
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+            link.classList.add('active');
         }
-        return false;
-      } else {
-        field.classList.remove('error');
-        if (errorElement) {
-          errorElement.textContent = '';
-          errorElement.style.display = 'none';
+    });
+}
+
+// ============================
+// 5. EFECTOS DE SCROLL Y ANIMACIONES
+// ============================
+
+function initializeScrollEffects() {
+    // Smooth scroll para botones CTA
+    const ctaButton = document.getElementById('cta-button');
+    const portfolioButton = document.getElementById('portfolio-button');
+    
+    if (ctaButton) {
+        ctaButton.addEventListener('click', () => {
+            const techSection = document.getElementById('technologies');
+            if (techSection) {
+                smoothScrollTo(techSection);
+            }
+        });
+    }
+    
+    if (portfolioButton) {
+        portfolioButton.addEventListener('click', () => {
+            const portfolioSection = document.getElementById('portfolio');
+            if (portfolioSection) {
+                smoothScrollTo(portfolioSection);
+            }
+        });
+    }
+}
+
+function smoothScrollTo(element) {
+    if (!element) return;
+    
+    const targetPosition = element.offsetTop - 80;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 1000;
+    let start = null;
+    
+    function animation(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const run = ease(timeElapsed, startPosition, distance, duration);
+        window.scrollTo(0, run);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
         }
-        return true;
-      }
+    }
+    
+    function ease(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
+        t--;
+        return -c / 2 * (t * (t - 2) - 1) + b;
+    }
+    
+    requestAnimationFrame(animation);
+}
+
+// ============================
+// 6. SISTEMA DE PARTÍCULAS (THREE.JS)
+// ============================
+
+function initializeParticles() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
+    
+    try {
+        // Configurar Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        
+        // Crear geometría de partículas
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = CONFIG.particlesCount;
+        
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        // Material de partículas
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.005,
+            color: '#00ff88',
+            transparent: true,
+            opacity: 0.8,
+            sizeAttenuation: true
+        });
+        
+        // Crear mesh de partículas
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        
+        camera.position.z = 2;
+        
+        // Animación de partículas
+        function animateParticles() {
+            const positions = particlesGeometry.attributes.position.array;
+            
+            for (let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+                positions[i3 + 1] -= CONFIG.animationSpeed;
+                
+                if (positions[i3 + 1] < -2.5) {
+                    positions[i3 + 1] = 2.5;
+                }
+            }
+            
+            particlesGeometry.attributes.position.needsUpdate = true;
+            particlesMesh.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+            APP_STATE.animationId = requestAnimationFrame(animateParticles);
+        }
+        
+        animateParticles();
+        
+        // Responsive resize
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+        
+    } catch (error) {
+        console.warn('Three.js particles error:', error);
+        // Fallback a partículas CSS
+        initializeFallbackParticles();
+    }
+}
+
+function initializeFallbackParticles() {
+    const canvas = document.getElementById('particles-canvas');
+    if (!canvas) return;
+    
+    // Crear partículas CSS como fallback
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'css-particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff88;
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${3 + Math.random() * 4}s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+        `;
+        canvas.appendChild(particle);
+    }
+}
+
+// ============================
+// 7. ANIMACIONES DEL HERO
+// ============================
+
+function initializeHeroAnimations() {
+    // Animación de entrada del hero
+    const heroTitle = document.querySelector('.hero-title');
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+    const heroButtons = document.querySelector('.hero-buttons');
+    const heroStats = document.querySelector('.hero-stats');
+    
+    if (heroTitle) {
+        heroTitle.style.opacity = '0';
+        heroTitle.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            heroTitle.style.transition = 'all 0.8s ease';
+            heroTitle.style.opacity = '1';
+            heroTitle.style.transform = 'translateY(0)';
+        }, 300);
+    }
+    
+    if (heroSubtitle) {
+        heroSubtitle.style.opacity = '0';
+        heroSubtitle.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            heroSubtitle.style.transition = 'all 0.8s ease';
+            heroSubtitle.style.opacity = '1';
+            heroSubtitle.style.transform = 'translateY(0)';
+        }, 600);
+    }
+    
+    if (heroStats) {
+        heroStats.style.opacity = '0';
+        heroStats.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            heroStats.style.transition = 'all 0.8s ease';
+            heroStats.style.opacity = '1';
+            heroStats.style.transform = 'translateY(0)';
+        }, 900);
+    }
+    
+    if (heroButtons) {
+        heroButtons.style.opacity = '0';
+        heroButtons.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            heroButtons.style.transition = 'all 0.8s ease';
+            heroButtons.style.opacity = '1';
+            heroButtons.style.transform = 'translateY(0)';
+        }, 1200);
+    }
+}
+
+// ============================
+// 8. CONTADORES ANIMADOS
+// ============================
+
+function initializeCounters() {
+    const counters = document.querySelectorAll('.stat-number');
+    let countersActivated = false;
+    
+    function activateCounters() {
+        if (countersActivated) return;
+        
+        const heroStats = document.querySelector('.hero-stats');
+        if (!heroStats) return;
+        
+        const rect = heroStats.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+            countersActivated = true;
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                const duration = 2000; // 2 segundos
+                const steps = 60; // 60 frames
+                const increment = target / steps;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    
+                    counter.textContent = Math.floor(current);
+                }, duration / steps);
+            });
+        }
+    }
+    
+    window.addEventListener('scroll', activateCounters);
+    activateCounters(); // Check on load
+}
+
+// ============================
+// 9. EFECTO TYPEWRITER
+// ============================
+
+function initializeTypewriter() {
+    const typingElement = document.querySelector('.typing-text');
+    if (!typingElement) return;
+    
+    const text = typingElement.textContent;
+    typingElement.textContent = '';
+    
+    let index = 0;
+    
+    function typeCharacter() {
+        if (index < text.length) {
+            typingElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeCharacter, CONFIG.typewriterSpeed);
+        } else {
+            // Agregar cursor parpadeante
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-cursor';
+            cursor.textContent = '|';
+            typingElement.appendChild(cursor);
+        }
+    }
+    
+    // Iniciar después de un delay
+    setTimeout(typeCharacter, 1500);
+}
+
+// ============================
+// 10. VALIDACIÓN DE FORMULARIO
+// ============================
+
+function initializeFormValidation() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    
+    form.addEventListener('submit', handleFormSubmit);
+    
+    // Validación en tiempo real
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', validateField);
+        input.addEventListener('input', clearFieldError);
+    });
+}
+
+function validateField(e) {
+    const field = e.target;
+    const fieldName = field.name;
+    const value = field.value.trim();
+    
+    clearFieldError(e);
+    
+    switch (fieldName) {
+        case 'name':
+            if (value.length < 2) {
+                showFieldError(field, 'El nombre debe tener al menos 2 caracteres');
+                return false;
+            }
+            break;
+            
+        case 'email':
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                showFieldError(field, 'Por favor ingrese un email válido');
+                return false;
+            }
+            break;
+            
+        case 'subject':
+            if (!value) {
+                showFieldError(field, 'Por favor seleccione un asunto');
+                return false;
+            }
+            break;
+            
+        case 'message':
+            if (value.length < 10) {
+                showFieldError(field, 'El mensaje debe tener al menos 10 caracteres');
+                return false;
+            }
+            break;
     }
     
     return true;
-  }
-  
-  validateForm() {
-    const fields = this.contactForm.querySelectorAll('input, select, textarea');
-    let isValid = true;
+}
+
+function clearFieldError(e) {
+    const field = e.target;
+    const errorElement = document.getElementById(`${field.name}-error`);
     
-    fields.forEach(field => {
-      if (!this.validateField(field)) {
-        isValid = false;
-      }
-    });
-    
-    return isValid;
-  }
-  
-  handleFormSubmit(e) {
-    e.preventDefault();
-    
-    if (!this.validateForm()) {
-      this.showFormError('Por favor corrige los errores en el formulario');
-      return;
+    if (errorElement) {
+        errorElement.textContent = '';
     }
     
-    // Show loading state
-    const submitButton = this.contactForm.querySelector('button[type="submit"]');
+    field.classList.remove('error');
+}
+
+function showFieldError(field, message) {
+    const errorElement = document.getElementById(`${field.name}-error`);
+    
+    if (errorElement) {
+        errorElement.textContent = message;
+    }
+    
+    field.classList.add('error');
+}
+
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    if (APP_STATE.isFormSubmitting) return;
+    
+    const form = e.target;
+    const formData = new FormData(form);
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    // Validar todos los campos
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!validateField({ target: field })) {
+            isValid = false;
+        }
+    });
+    
+    if (!isValid) {
+        showNotification('Por favor corrija los errores en el formulario', 'error');
+        return;
+    }
+    
+    // Simular envío de formulario
+    APP_STATE.isFormSubmitting = true;
+    
+    // Cambiar estado del botón
     const originalText = submitButton.innerHTML;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
     submitButton.disabled = true;
     
-    // Simulate form submission
-    setTimeout(() => {
-      this.showFormSuccess('¡Mensaje enviado exitosamente! Te contactaremos pronto.');
-      this.contactForm.reset();
-      
-      // Reset button
-      submitButton.innerHTML = originalText;
-      submitButton.disabled = false;
-      
-      // Clear all error messages
-      const errorElements = this.contactForm.querySelectorAll('.error-message');
-      errorElements.forEach(el => {
-        el.textContent = '';
-        el.style.display = 'none';
-      });
-      
-      // Remove error classes
-      const fields = this.contactForm.querySelectorAll('input, select, textarea');
-      fields.forEach(field => field.classList.remove('error'));
-      
-    }, 2000);
-  }
-  
-  showFormSuccess(message) {
-    this.showNotification(message, 'success');
-  }
-  
-  showFormError(message) {
-    this.showNotification(message, 'error');
-  }
-  
-  showNotification(message, type = 'info') {
-    // Create notification element
+    try {
+        // Simular llamada a API
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Mostrar éxito
+        showNotification('¡Mensaje enviado exitosamente! Nos pondremos en contacto pronto.', 'success');
+        form.reset();
+        
+    } catch (error) {
+        showNotification('Error al enviar el mensaje. Por favor intente nuevamente.', 'error');
+    } finally {
+        APP_STATE.isFormSubmitting = false;
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    }
+}
+
+// ============================
+// 11. INICIALIZACIÓN DE LIBRERÍAS
+// ============================
+
+function initializeAOS() {
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false,
+            offset: 100
+        });
+    }
+}
+
+function initializeGSAP() {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Animaciones con GSAP
+        gsap.from('.hero-title .line-1', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.5
+        });
+        
+        gsap.from('.hero-title .line-2', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.7
+        });
+        
+        gsap.from('.hero-title .line-3', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            delay: 0.9
+        });
+        
+        // Animaciones con scroll trigger
+        gsap.utils.toArray('.tech-category').forEach((category, index) => {
+            gsap.from(category, {
+                duration: 1,
+                y: 100,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: category,
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        });
+    }
+}
+
+// ============================
+// 12. BOTÓN FLOTANTE DE CV
+// ============================
+
+function initializeFloatingCV() {
+    // Crear botón flotante de CV
+    const cvButton = document.createElement('button');
+    cvButton.className = 'floating-cv-btn';
+    cvButton.innerHTML = '<i class="fas fa-download"></i> CV';
+    cvButton.setAttribute('aria-label', 'Descargar CV');
+    
+    // Agregar estilos inline para el botón
+    cvButton.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #00ff88, #00cc6a);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        transition: all 0.3s ease;
+        transform: translateY(100px);
+        opacity: 0;
+    `;
+    
+    document.body.appendChild(cvButton);
+    
+    // Mostrar botón después del scroll
+    function toggleCVButton() {
+        const scrolled = window.scrollY > 500;
+        
+        if (scrolled) {
+            cvButton.style.transform = 'translateY(0)';
+            cvButton.style.opacity = '1';
+        } else {
+            cvButton.style.transform = 'translateY(100px)';
+            cvButton.style.opacity = '0';
+        }
+    }
+    
+    window.addEventListener('scroll', toggleCVButton);
+    
+    // Evento click para descargar CV
+    cvButton.addEventListener('click', () => {
+        // Simular descarga de CV
+        showNotification('CV descargado exitosamente', 'success');
+        
+        // Aquí iría la lógica real de descarga
+        // const link = document.createElement('a');
+        // link.href = 'path/to/cv.pdf';
+        // link.download = 'BMWebSolutions_CV.pdf';
+        // link.click();
+    });
+}
+
+// ============================
+// 13. SCROLL TO TOP
+// ============================
+
+function initializeScrollToTop() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (!backToTopBtn) return;
+    
+    function toggleBackToTop() {
+        const scrolled = window.scrollY > 300;
+        backToTopBtn.style.display = scrolled ? 'flex' : 'none';
+    }
+    
+    window.addEventListener('scroll', toggleBackToTop);
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// ============================
+// 14. SISTEMA DE NOTIFICACIONES
+// ============================
+
+function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
+    
+    const icon = type === 'success' ? 'check-circle' : 
+                type === 'error' ? 'exclamation-triangle' : 
+                'info-circle';
+    
     notification.innerHTML = `
-      <div class="notification-content">
-        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        <i class="fas fa-${icon}"></i>
         <span>${message}</span>
-        <button class="notification-close">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
     `;
     
-    // Add styles
+    // Estilos inline para la notificación
     notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: ${type === 'success' ? '#2ecc71' : '#e74c3c'};
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10000;
-      max-width: 400px;
-      animation: slideInRight 0.3s ease-out;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        max-width: 350px;
+        font-size: 14px;
     `;
     
-    // Add to document
     document.body.appendChild(notification);
     
-    // Close button functionality
-    const closeBtn = notification.querySelector('.notification-close');
-    closeBtn.addEventListener('click', () => {
-      notification.remove();
-    });
-    
-    // Auto remove after 5 seconds
+    // Animación de entrada
     setTimeout(() => {
-      if (notification.parentElement) {
-        notification.style.animation = 'slideOutRight 0.3s ease-in';
-        setTimeout(() => notification.remove(), 300);
-      }
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remover después de 5 segundos
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
     }, 5000);
-  }
-  
-  // ===============================
-  // SCROLL ANIMATIONS
-  // ===============================
-  
-  setupScrollAnimations() {
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+}
+
+// ============================
+// 15. UTILIDADES Y HELPERS
+// ============================
+
+// Debounce function para optimizar eventos
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
     };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate');
-        }
-      });
-    }, observerOptions);
-    
-    // Observe elements with animation classes
-    const animateElements = document.querySelectorAll('.tech-card, .portfolio-card, .team-card');
-    animateElements.forEach(el => observer.observe(el));
-  }
-  
-  // ===============================
-  // AOS INITIALIZATION
-  // ===============================
-  
-  initAOS() {
-    if (typeof AOS !== 'undefined') {
-      AOS.init({
-        duration: 1000,
-        once: true,
-        offset: 100,
-        delay: 100,
-        easing: 'ease-out-quart'
-      });
-    }
-  }
-  
-  // ===============================
-  // RESIZE HANDLING
-  // ===============================
-  
-  handleResize() {
-    // Close mobile menu on resize
-    if (window.innerWidth > 768 && this.isMenuOpen) {
-      this.closeMenu();
-    }
-    
-    // Refresh AOS
-    if (typeof AOS !== 'undefined') {
-      AOS.refresh();
-    }
-  }
-  
-  // ===============================
-  // KEYBOARD NAVIGATION
-  // ===============================
-  
-  handleKeydown(e) {
-    // Close menu with Escape key
-    if (e.key === 'Escape' && this.isMenuOpen) {
-      this.closeMenu();
-    }
-    
-    // Navigate with arrow keys
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      this.navigateWithKeyboard(e.key === 'ArrowUp' ? -1 : 1);
-    }
-  }
-  
-  navigateWithKeyboard(direction) {
-    const sections = document.querySelectorAll('section[id]');
-    const currentIndex = this.getCurrentSectionIndex();
-    let nextIndex = currentIndex + direction;
-    
-    if (nextIndex < 0) nextIndex = sections.length - 1;
-    if (nextIndex >= sections.length) nextIndex = 0;
-    
-    const nextSection = sections[nextIndex];
-    if (nextSection) {
-      this.scrollToElement(nextSection);
-    }
-  }
-  
-  getCurrentSectionIndex() {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollPos = window.pageYOffset + 100;
-    
-    for (let i = 0; i < sections.length; i++) {
-      const section = sections[i];
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      
-      if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-        return i;
-      }
-    }
-    
-    return 0;
-  }
-  
-  // ===============================
-  // UTILITY FUNCTIONS
-  // ===============================
-  
-  throttle(func, limit) {
+}
+
+// Throttle function para eventos de scroll
+function throttle(func, limit) {
     let inThrottle;
     return function() {
-      const args = arguments;
-      const context = this;
-      if (!inThrottle) {
-        func.apply(context, args);
-        inThrottle = true;
-        setTimeout(() => inThrottle = false, limit);
-      }
-    };
-  }
-  
-  debounce(func, wait, immediate) {
-    let timeout;
-    return function() {
-      const context = this;
-      const args = arguments;
-      const later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      const callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  }
-}
-
-// ===============================
-// ADDITIONAL UTILITIES
-// ===============================
-
-// Lazy loading for images
-function initLazyLoading() {
-  const lazyImages = document.querySelectorAll('img[data-src]');
-  
-  if ('IntersectionObserver' in window) {
-    const lazyImageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src;
-          img.classList.remove('lazy');
-          lazyImageObserver.unobserve(img);
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
         }
-      });
-    });
-    
-    lazyImages.forEach(img => lazyImageObserver.observe(img));
-  } else {
-    // Fallback for browsers that don't support IntersectionObserver
-    lazyImages.forEach(img => {
-      img.src = img.dataset.src;
-      img.classList.remove('lazy');
-    });
-  }
+    }
 }
 
-// Performance monitoring
-function initPerformanceMonitoring() {
-  if ('performance' in window) {
-    window.addEventListener('load', () => {
-      const perfData = window.performance.timing;
-      const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-      
-      console.log(`Page load time: ${loadTime}ms`);
-      
-      // Report to analytics if available
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'page_load_time', {
-          value: loadTime,
-          custom_parameter: 'performance'
-        });
-      }
-    });
-  }
+// Detectar si el elemento está en el viewport
+function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
 }
 
-// ===============================
-// INITIALIZATION
-// ===============================
+// ============================
+// 16. MANEJO DE ERRORES Y CLEANUP
+// ============================
 
-// Initialize when DOM is ready
+// Manejo global de errores
+window.addEventListener('error', (e) => {
+    console.error('Error capturado:', e.error);
+    showNotification('Ha ocurrido un error. Por favor recargue la página.', 'error');
+});
+
+// Cleanup al cerrar la página
+window.addEventListener('beforeunload', () => {
+    if (APP_STATE.animationId) {
+        cancelAnimationFrame(APP_STATE.animationId);
+    }
+});
+
+// ============================
+// 17. EVENTOS ADICIONALES
+// ============================
+
+// Lazy loading para imágenes
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize main app
-  window.bmWebSolutions = new BMWebSolutions();
-  
-  // Initialize additional features
-  initLazyLoading();
-  initPerformanceMonitoring();
-  
-  // Add custom CSS animations
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+    const images = document.querySelectorAll('img[data-src]');
     
-    @keyframes slideOutRight {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
     }
-    
-    .notification-content {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .notification-close {
-      background: none;
-      border: none;
-      color: inherit;
-      cursor: pointer;
-      padding: 0.25rem;
-      margin-left: auto;
-    }
-    
-    .error {
-      border-color: #e74c3c !important;
-      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
-    }
-  `;
-  document.head.appendChild(style);
 });
 
-// Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    // Pause animations when tab is not visible
-    console.log('Page hidden - pausing animations');
-  } else {
-    // Resume animations when tab becomes visible
-    console.log('Page visible - resuming animations');
-  }
-});
+// Optimización de rendimiento
+let ticking = false;
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = BMWebSolutions;
+function updateAnimations() {
+    // Actualizar animaciones aquí
+    ticking = false;
 }
+
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updateAnimations);
+        ticking = true;
+    }
+}
+
+// Eventos optimizados
+window.addEventListener('scroll', throttle(requestTick, 16));
+window.addEventListener('resize', debounce(() => {
+    // Actualizar dimensiones y recalcular layouts
+    location.reload();
+}, 250));
+
+// ============================
+// 18. CONSOLE LOG PERSONALIZADO
+// ============================
+
+console.log(`
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║    🚀 BMWebSolutions CR - Sitio Web Cargado                 ║
+║                                                              ║
+║    Desarrollado por: Brandon Soto & Manfred Zuñiga          ║
+║    Versión: 1.0.0                                           ║
+║    Fecha: ${new Date().toLocaleDateString()}                                            ║
+║                                                              ║
+║    📌 Portafolio: GranimarCR, Taller Avena, Stone By Ric    ║
+║    🌐 Tecnologías: HTML5, CSS3, JavaScript, Three.js, GSAP  ║
+║    📱 Responsive: ✅ | Accesible: ✅ | PWA Ready: ✅        ║
+║                                                              ║
+║    ¿Necesitas un sitio web? ¡Contáctanos! 🇨🇷              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+`);
+
+// ============================
+// FIN DEL ARCHIVO
+// ============================
